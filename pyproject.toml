@@ -1,0 +1,8 @@
+[project]
+name = "python-rest-crud"
+version = "0.1.0"
+description = "REST API CRUD sederhana pakai stdlib http.server untuk belajar Python"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
