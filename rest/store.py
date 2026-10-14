@@ -1,4 +1,4 @@
-"""Data layer: list of dict + simpan ke file JSON."""
+"""Data layer: list of dict + persist to a JSON file."""
 import json
 from pathlib import Path
 

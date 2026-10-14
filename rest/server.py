@@ -1,4 +1,4 @@
-"""HTTP layer: baca method+URL, panggil store, balas JSON."""
+"""HTTP layer: parse method+URL, call store, reply JSON."""
 import json
 import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -46,7 +46,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         body = self._read_body()
         if not body or "name" not in body:
-            self._send(400, {"error": "butuh field 'name'"})
+            self._send(400, {"error": "missing 'name' field"})
             return
         items = store.load()
         item = store.create(items, body["name"])
@@ -57,7 +57,7 @@ class Handler(BaseHTTPRequestHandler):
         item_id = self._item_id()
         body = self._read_body()
         if item_id is None or not body or "name" not in body:
-            self._send(400, {"error": "butuh id dan field 'name'"})
+            self._send(400, {"error": "missing id and 'name' field"})
             return
         items = store.load()
         item = store.update(items, item_id, body["name"])
@@ -83,7 +83,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def run(port=8000):
     server = HTTPServer(("localhost", port), Handler)
-    print(f"Jalan di http://localhost:{port}")
+    print(f"Running at http://localhost:{port}")
     server.serve_forever()
 
 

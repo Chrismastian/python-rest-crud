@@ -11,7 +11,7 @@ from rest import server
 
 @pytest.fixture
 def base_url(tmp_path, monkeypatch):
-    """Start server di port acak, jalan di thread, chdir ke tmp biar data terisolasi."""
+    """Start the server on a random port in a thread; chdir to tmp so data is isolated."""
     monkeypatch.chdir(tmp_path)
     httpd = HTTPServer(("localhost", 0), server.Handler)
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
@@ -32,24 +32,24 @@ def request(method, url, payload=None):
 
 
 def test_crud_flow(base_url):
-    # kosong dulu
+    # empty first
     assert request("GET", f"{base_url}/items") == (200, [])
 
     # create
-    status, item = request("POST", f"{base_url}/items", {"name": "kopi"})
+    status, item = request("POST", f"{base_url}/items", {"name": "coffee"})
     assert status == 201
-    assert item == {"id": 1, "name": "kopi"}
+    assert item == {"id": 1, "name": "coffee"}
 
-    # read satu
-    assert request("GET", f"{base_url}/items/1") == (200, {"id": 1, "name": "kopi"})
+    # read one
+    assert request("GET", f"{base_url}/items/1") == (200, {"id": 1, "name": "coffee"})
 
     # update
-    status, item = request("PUT", f"{base_url}/items/1", {"name": "teh"})
+    status, item = request("PUT", f"{base_url}/items/1", {"name": "tea"})
     assert status == 200
-    assert item["name"] == "teh"
+    assert item["name"] == "tea"
 
     # delete
-    assert request("DELETE", f"{base_url}/items/1") == (200, {"id": 1, "name": "teh"})
+    assert request("DELETE", f"{base_url}/items/1") == (200, {"id": 1, "name": "tea"})
     assert request("GET", f"{base_url}/items") == (200, [])
 
 
